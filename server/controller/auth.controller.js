@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
+import nodemon from "nodemon";
 
 export const signup = async (req, res, next) => {
     const { username, password, email } = req.body;
@@ -39,14 +40,16 @@ export const signin = async (req, res, next) => {
 
         const { password: pass, ...rest } = validUser._doc;
 
-        return res
-            .cookie("Access_Token", token, {
-                httpOnly: true,
-                secure: true,
-            })
+        res.cookie("Access_Token", token, {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+        })
             .status(200)
             .json(rest);
     } catch (error) {
         next(error);
     }
 };
+
+
