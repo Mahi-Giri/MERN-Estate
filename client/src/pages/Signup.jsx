@@ -34,9 +34,13 @@ const Signup = () => {
                 setLoading(false);
                 return;
             }
+
+            if (response.ok) {
+                navigate("/signin");
+            }
+
             setLoading(false);
             setError(null);
-            navigate("/signin");
         } catch (error) {
             setLoading(false);
             setError(error.message);
