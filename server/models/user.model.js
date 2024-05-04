@@ -16,6 +16,11 @@ const userSchema = Schema(
             type: String,
             required: true,
         },
+        avatar: {
+            type: String,
+            default:
+                "https://png.pngtree.com/png-clipart/20191122/original/pngtree-user-icon-isolated-on-abstract-background-png-image_5192004.jpg",
+        },
     },
     {
         timestamps: true,
