@@ -19,6 +19,7 @@ const OAuth = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     name: result.user.displayName,
                     email: result.user.email,
