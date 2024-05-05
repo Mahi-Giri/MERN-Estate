@@ -14,6 +14,7 @@ const Profile = () => {
     const [formData, setFormData] = useState({});
     const dispatch = useDispatch();
     const { loading, error } = useSelector((store) => store.user);
+    const [updateSuccess, setUpdateSuccess] = useState(false);
 
     useEffect(() => {
         if (file) handleFileUpload(file);
@@ -71,6 +72,7 @@ const Profile = () => {
 
             if (response.ok) {
                 dispatch(updateUserSuccess(data));
+                setUpdateSuccess(true);
             }
         } catch (error) {
             dispatch(updateUserFailure(error.message));
@@ -130,10 +132,11 @@ const Profile = () => {
                 </button>
             </form>
             <div className="flex justify-between mt-5">
-                <span className="text-red-700 cursor-pointer">Delete Account</span>
-                <span className="text-red-700 cursor-pointer">Sign Out</span>
+                <span className="text-red-500 cursor-pointer">Delete Account</span>
+                <span className="text-red-500 cursor-pointer">Sign Out</span>
             </div>
             <p className="text-red-500 mt-5">{error ? error : ""}</p>
+            <p className="text-green-500 mt-5">{updateSuccess ? "User updated Successfully" : ""}</p>
         </div>
     );
 };
