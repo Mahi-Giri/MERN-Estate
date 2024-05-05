@@ -20,7 +20,7 @@ const Signup = () => {
         try {
             e.preventDefault();
             setLoading(true);
-            const response = await fetch(`${backendURL}/api/v1/auth/signup`, {
+            const response = await fetch(`${backendURL}/auth/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

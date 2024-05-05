@@ -22,7 +22,7 @@ const Signin = () => {
         try {
             e.preventDefault();
             dispatch(signinStart());
-            const response = await fetch(`${backendURL}/api/v1/auth/signin`, {
+            const response = await fetch(`${backendURL}/auth/signin`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
