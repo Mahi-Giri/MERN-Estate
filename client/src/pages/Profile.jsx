@@ -61,9 +61,9 @@ const Profile = () => {
                 credentials: "include",
                 body: JSON.stringify(formData),
             });
-            console.log(response);
+
             const data = await response.json();
-            console.log(data);
+
             if (!response.ok) {
                 dispatch(updateUserFailure(data.message));
                 return;
@@ -71,7 +71,6 @@ const Profile = () => {
 
             if (response.ok) {
                 dispatch(updateUserSuccess(data));
-                navigate("/");
             }
         } catch (error) {
             dispatch(updateUserFailure(error.message));
@@ -123,7 +122,10 @@ const Profile = () => {
                     className="border p-3 rounded-lg"
                     onChange={handleChange}
                 />
-                <button className="bg-slate-500 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">
+                <button
+                    disabled={loading}
+                    className="bg-slate-500 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
+                >
                     {loading ? "Loading..." : "Update"}
                 </button>
             </form>
@@ -131,6 +133,7 @@ const Profile = () => {
                 <span className="text-red-700 cursor-pointer">Delete Account</span>
                 <span className="text-red-700 cursor-pointer">Sign Out</span>
             </div>
+            <p className="text-red-500 mt-5">{error ? error : ""}</p>
         </div>
     );
 };
