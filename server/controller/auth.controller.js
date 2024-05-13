@@ -2,7 +2,6 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
-import nodemon from "nodemon";
 
 export const signup = async (req, res, next) => {
     const { username, password, email } = req.body;
@@ -44,6 +43,7 @@ export const signin = async (req, res, next) => {
             httpOnly: true,
             sameSite: "none",
             secure: true,
+            expires: new Date().setTime(new Date().getTime() + (4 * 60 * 60 * 1000)),
         })
             .status(200)
             .json(rest);

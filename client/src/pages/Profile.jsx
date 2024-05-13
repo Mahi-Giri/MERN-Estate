@@ -14,6 +14,7 @@ import {
     updateUserSuccess,
 } from "../redux/userSlice";
 import { backendURL } from "../constant";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
     const { currentUser } = useSelector((Store) => Store.user);
@@ -126,7 +127,7 @@ const Profile = () => {
             });
 
             const data = await response.json();
-            
+
             if (response.ok) {
                 dispatch(signOutSuccess(data));
             } else {
@@ -188,6 +189,12 @@ const Profile = () => {
                 >
                     {loading ? "Loading..." : "Update"}
                 </button>
+                <Link
+                    to="/create-listing"
+                    className="bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95"
+                >
+                    Create Listing
+                </Link>
             </form>
             <div className="flex justify-between mt-5">
                 <span onClick={handleDelete} className="text-red-500 cursor-pointer">
