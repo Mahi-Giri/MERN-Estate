@@ -27,23 +27,13 @@ const listingSchema = new Schema(
             required: true,
         },
 
-        bathRooms: {
-            type: Number,
-            required: true,
-        },
-
         bedRooms: {
             type: Number,
             required: true,
         },
 
-        isFurnished: {
-            type: Boolean,
-            required: true,
-        },
-
-        isParking: {
-            type: Boolean,
+        bathRooms: {
+            type: Number,
             required: true,
         },
 
@@ -53,6 +43,16 @@ const listingSchema = new Schema(
         },
 
         isOffer: {
+            type: Boolean,
+            required: true,
+        },
+        
+        isParking: {
+            type: Boolean,
+            required: true,
+        },
+        
+        isFurnished: {
             type: Boolean,
             required: true,
         },
