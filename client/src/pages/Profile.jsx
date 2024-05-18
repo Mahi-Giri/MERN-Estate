@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, getStorage, list, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from "../firebase";
 import {
     deleteUserFailure,
@@ -26,6 +26,8 @@ const Profile = () => {
     const dispatch = useDispatch();
     const { loading, error } = useSelector((store) => store.user);
     const [updateSuccess, setUpdateSuccess] = useState(false);
+    const [showListingError, setShowListingError] = useState(false);
+    const [userListing, setUserListing] = useState([]);
 
     useEffect(() => {
         if (file) handleFileUpload(file);
@@ -138,6 +140,52 @@ const Profile = () => {
         }
     };
 
+    const handleShowListing = async () => {
+        try {
+            setShowListingError(false);
+            const response = await fetch(`${backendURL}/user/listing/${currentUser._id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setUserListing(data);
+            } else {
+                setShowListingError(true);
+            }
+        } catch (error) {
+            setShowListingError(true);
+            console.log(error.message);
+        }
+    };
+
+    const handleDeleteListing = async (id) => {
+        try {
+            const response = await fetch(`${backendURL}/listing/delete/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                handleShowListing();
+            } else {
+                console.log(data);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
     return (
         <div className="p-3 max-w-lg mx-auto">
             <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
@@ -206,6 +254,37 @@ const Profile = () => {
             </div>
             <p className="text-red-500 mt-5">{error ? error : ""}</p>
             <p className="text-green-500 mt-5">{updateSuccess ? "User updated Successfully" : ""}</p>
+            <button className="text-green-500 w-full" onClick={handleShowListing}>
+                Show Listing
+            </button>
+            <p className="text-red-500 mt-5"> {showListingError ? "Error while showing the listing" : ""} </p>
+            {userListing && userListing.length > 0 && (
+                <div className="flex flex-col gap-4">
+                    <h1 className="font-semibold text-2xl text-center mt-6">Your Listing</h1>
+                    {userListing.map((listing) => (
+                        <div
+                            key={listing._id}
+                            className="flex border rounded-lg p-3 justify-between items-center mt-2 gap-4"
+                        >
+                            <Link to={`listing/${listing._id}`}>
+                                <img className="h-16 w-20 object-contain" src={listing.imageURLs} alt={listing.name} />
+                            </Link>
+                            <Link
+                                to={`listing/${listing._id}`}
+                                className="font-semibold text-slate-700 hover:underline truncate flex-1"
+                            >
+                                <p>{listing.name}</p>
+                            </Link>
+                            <div className="flex flex-col items-center">
+                                <button className="text-red-600" onClick={() => handleDeleteListing(listing._id)}>
+                                    Delete
+                                </button>
+                                <button className="text-green-600">Edit</button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
