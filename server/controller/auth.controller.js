@@ -43,7 +43,7 @@ export const signin = async (req, res, next) => {
             httpOnly: true,
             sameSite: "none",
             secure: true,
-            expires: new Date().setTime(new Date().getTime() + (4 * 60 * 60 * 1000)),
+            // expires: new Date().setTime(new Date().getTime() + (4 * 60 * 60 * 1000)),
         })
             .status(200)
             .json(rest);
