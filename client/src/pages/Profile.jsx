@@ -179,11 +179,15 @@ const Profile = () => {
             if (response.ok) {
                 handleShowListing();
             } else {
-                console.log(data);
+                console.log(data.message);
             }
         } catch (error) {
             console.log(error.message);
         }
+    };
+
+    const handleEditListing = async (id) => {
+        // TODO:
     };
 
     return (
@@ -279,7 +283,11 @@ const Profile = () => {
                                 <button className="text-red-600" onClick={() => handleDeleteListing(listing._id)}>
                                     Delete
                                 </button>
-                                <button className="text-green-600">Edit</button>
+                                <Link to={`/update-listing/${listing._id}`}>
+                                    <button className="text-green-600" onClick={() => handleEditListing(listing._id)}>
+                                        Edit
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     ))}
