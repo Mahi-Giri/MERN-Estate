@@ -186,10 +186,6 @@ const Profile = () => {
         }
     };
 
-    const handleEditListing = async (id) => {
-        // TODO:
-    };
-
     return (
         <div className="p-3 max-w-lg mx-auto">
             <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
@@ -270,11 +266,11 @@ const Profile = () => {
                             key={listing._id}
                             className="flex border rounded-lg p-3 justify-between items-center mt-2 gap-4"
                         >
-                            <Link to={`listing/${listing._id}`}>
+                            <Link to={`/listing/${listing._id}`}>
                                 <img className="h-16 w-20 object-contain" src={listing.imageURLs} alt={listing.name} />
                             </Link>
                             <Link
-                                to={`listing/${listing._id}`}
+                                to={`/listing/${listing._id}`}
                                 className="font-semibold text-slate-700 hover:underline truncate flex-1"
                             >
                                 <p>{listing.name}</p>
@@ -284,7 +280,7 @@ const Profile = () => {
                                     Delete
                                 </button>
                                 <Link to={`/update-listing/${listing._id}`}>
-                                    <button className="text-green-600" onClick={() => handleEditListing(listing._id)}>
+                                    <button className="text-green-600">
                                         Edit
                                     </button>
                                 </Link>
