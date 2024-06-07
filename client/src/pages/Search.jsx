@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { backendURL } from "../constant";
+import ListingItem from "../component/ListingItem";
 
 const Search = () => {
     const [sidebarData, setSidebarData] = useState({
         searchTerm: "",
         type: "all",
-        isOffer: false,
-        isFurnished: false,
-        isParking: false,
+        offer: false,
+        furnished: false,
+        parking: false,
         sort: "created_at",
         order: "desc",
     });
@@ -16,15 +17,15 @@ const Search = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [listing, setListing] = useState([]);
-    console.log(listing);
+    // console.log(listing);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
         const searchTermFromURL = urlParams.get("searchTerm");
         const typeFromURL = urlParams.get("type");
-        const offerFromURL = urlParams.get("isOffer");
-        const furnishedFromURL = urlParams.get("isFurnished");
-        const parkingFromURL = urlParams.get("isParking");
+        const offerFromURL = urlParams.get("offer");
+        const furnishedFromURL = urlParams.get("furnished");
+        const parkingFromURL = urlParams.get("parking");
         const sortFromURL = urlParams.get("sort");
         const orderFromURL = urlParams.get("order");
 
@@ -40,9 +41,9 @@ const Search = () => {
             setSidebarData({
                 searchTerm: searchTermFromURL,
                 type: typeFromURL || "all",
-                isOffer: offerFromURL === "true" ? true : false,
-                isFurnished: furnishedFromURL === "true" ? true : false,
-                isParking: parkingFromURL === "true" ? true : false,
+                offer: offerFromURL === "true" ? true : false,
+                furnished: furnishedFromURL === "true" ? true : false,
+                parking: parkingFromURL === "true" ? true : false,
                 sort: sortFromURL || "created_at",
                 order: orderFromURL || "desc",
             });
@@ -87,7 +88,7 @@ const Search = () => {
             });
         }
 
-        if (e.target.id === "isOffer" || e.target.id === "isParking" || e.target.id === "isFurnished") {
+        if (e.target.id === "offer" || e.target.id === "parking" || e.target.id === "furnished") {
             setSidebarData({
                 ...sidebarData,
                 [e.target.id]: e.target.checked || e.target.checked === "true" ? true : false,
@@ -110,9 +111,9 @@ const Search = () => {
         const urlParams = new URLSearchParams();
         urlParams.set("searchTerm", sidebarData.searchTerm);
         urlParams.set("type", sidebarData.type);
-        urlParams.set("isOffer", sidebarData.isOffer);
-        urlParams.set("isFurnished", sidebarData.isFurnished);
-        urlParams.set("isParking", sidebarData.isParking);
+        urlParams.set("offer", sidebarData.offer);
+        urlParams.set("furnished", sidebarData.furnished);
+        urlParams.set("parking", sidebarData.parking);
         urlParams.set("sort", sidebarData.sort);
         urlParams.set("order", sidebarData.order);
         const searchQuery = urlParams.toString();
@@ -171,10 +172,10 @@ const Search = () => {
                         <div className="flex gap-2">
                             <input
                                 type="checkbox"
-                                id="isOffer"
+                                id="offer"
                                 className="w-5"
                                 onChange={handleChange}
-                                checked={sidebarData.isOffer === true}
+                                checked={sidebarData.offer === true}
                             />
                             <span>Offer</span>
                         </div>
@@ -184,20 +185,20 @@ const Search = () => {
                         <div className="flex gap-2">
                             <input
                                 type="checkbox"
-                                id="isParking"
+                                id="parking"
                                 className="w-5"
                                 onChange={handleChange}
-                                checked={sidebarData.isParking === true}
+                                checked={sidebarData.parking === true}
                             />
                             <span>Parking</span>
                         </div>
                         <div className="flex gap-2">
                             <input
                                 type="checkbox"
-                                id="isFurnished"
+                                id="furnished"
                                 className="w-5"
                                 onChange={handleChange}
-                                checked={sidebarData.isFurnished === true}
+                                checked={sidebarData.furnished === true}
                             />
                             <span>Furnished</span>
                         </div>
@@ -223,8 +224,15 @@ const Search = () => {
                     </button>
                 </form>
             </div>
-            <div className="">
+            <div className="flex-1">
                 <h1 className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5">Listing result:</h1>
+                <div className="flex flex-wrap gap-4 p-7">
+                    {!loading && listing.length === 0 && <p className="text-xl text-slate-700">No listing found !!!</p>}
+                    {loading && <div className="text-xl text-slate-700 text-center w-full">Loading...</div>}
+                    {!loading &&
+                        listing &&
+                        listing.map((listing) => <ListingItem key={listing._id} listing={listing} />)}
+                </div>
             </div>
         </div>
     );

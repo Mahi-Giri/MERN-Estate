@@ -100,7 +100,7 @@ const Listing = () => {
                             </p>
                             {listing.isOffer && (
                                 <p className="bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                                    ₹ {listing.regularPrice - listing.discountPrice}
+                                    ₹ {listing.discountPrice} OFF
                                 </p>
                             )}
                         </div>
@@ -122,6 +122,7 @@ const Listing = () => {
                                 {listing.isParking ? "Parking" : "No Parking"}
                             </li>
                             <li className="flex items-center gap-1 whitespace-nowrap">
+                                <FaChair className="text-lg" />
                                 <FaChair className="text-lg" />
                                 {listing.isFurnished ? "Furnished" : "Unfurnished"}
                             </li>
